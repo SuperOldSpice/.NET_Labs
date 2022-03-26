@@ -6,15 +6,35 @@ using System.Threading.Tasks;
 
 namespace Bank
 {
-    class Credit
+    public enum Currency
+    {
+        USD,
+        UAH
+    }
+    public class Credit
     {
         public int code { get; }
         public int client_code { get; }
         public int bank_account { get; }
-        public int currency { get; }
-        public int sum { get; }
-        public int percent { get; }
+        public Currency currency { get; }
+        public decimal sum { get; }
+        public float percent { get; }
         public DateTime start { get; }
         public DateTime end { get; }
+
+        //constructor
+        public Credit(int new_code, int new_client, int new_bank, 
+            Currency new_currency, decimal new_sum, float new_percent, 
+            DateTime new_start, DateTime new_end)
+        {
+            this.code = new_code;
+            this.client_code = new_client;
+            this.bank_account = new_bank;
+            this.currency = new_currency;
+            this.sum = new_sum;
+            this.percent = new_percent;
+            this.start = new_start;
+            this.end = new_end;
+        }
     }
 }
