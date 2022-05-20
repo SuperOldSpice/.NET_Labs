@@ -3,6 +3,7 @@ using Bank;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace MyApp 
 {
@@ -40,7 +41,28 @@ namespace MyApp
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Simple LINQ \n");
+            Console.WriteLine("XML \n");
+
+            XDocument xdoc = new XDocument();
+            XElement people = new XElement("people");
+
+            foreach (Client client in clients){
+                XElement newClient = new XElement("client");
+                XAttribute newClientNameAttribute = new XAttribute("name", client.name);
+                XElement newClientCode = new XElement("code", client.code);
+                XElement newClientIPN = new XElement("IPN", client.IPN);
+                XElement newClientEmail = new XElement("email", client.email);
+
+                newClient.Add(newClientNameAttribute);
+                newClient.Add(newClientCode);
+                newClient.Add(newClientIPN);
+                newClient.Add(newClientEmail);
+
+                people.Add(newClient);
+            }
+
+            xdoc.Add(people);
+            xdoc.Save("clients.xml");
 
             
         }

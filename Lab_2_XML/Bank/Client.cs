@@ -10,7 +10,7 @@ namespace Bank
     {
         public string name { get;}
         public int code { get; }
-        private int IPN { get; }
+        public int IPN { get; }
         public string email { get; }
 
         //constructor
