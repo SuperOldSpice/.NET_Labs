@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml;
 
 namespace MyApp 
 {
@@ -38,15 +39,14 @@ namespace MyApp
             new Deposit(15131, 7234, 23234, Currency.UAH, 65000, 10, new DateTime(2016, 12, 24), new DateTime(2022, 7, 24)),
             new Deposit(32451, 7234, 23234, Currency.UAH, 9000, 8, new DateTime(2019, 11, 21), new DateTime(2023, 8, 21)),
         };
-        static void Main(string[] args)
+        
+        static XDocument CreateClientsXML(List<Client> clients)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("XML \n");
-
             XDocument xdoc = new XDocument();
             XElement people = new XElement("people");
 
-            foreach (Client client in clients){
+            foreach (Client client in clients)
+            {
                 XElement newClient = new XElement("client");
                 XAttribute newClientNameAttribute = new XAttribute("name", client.name);
                 XElement newClientCode = new XElement("code", client.code);
@@ -62,9 +62,76 @@ namespace MyApp
             }
 
             xdoc.Add(people);
-            xdoc.Save("clients.xml");
+            return xdoc;
+        }
 
-            
+        static void createCreditsXML(List<Credit> credits)
+        {
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            using (XmlWriter writer = XmlWriter.Create("credits.xml", settings))
+            {
+                writer.WriteStartElement("credits");
+                foreach (Credit credit in credits)
+                {
+                    writer.WriteStartElement("credit");
+                    writer.WriteElementString("code", credit.code.ToString());
+                    writer.WriteElementString("creditCode", credit.client_code.ToString());
+                    writer.WriteElementString("creditBankAccount", credit.bank_account.ToString());
+                    writer.WriteElementString("creditCurrency", credit.currency.ToString());
+                    writer.WriteElementString("creditSum", credit.sum.ToString());
+                    writer.WriteElementString("creditPercent", credit.percent.ToString());
+                    writer.WriteElementString("creditStart", credit.start.ToString());
+                    writer.WriteElementString("creditEnd", credit.end.ToString());
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+        }
+
+        static void createDepositsXML(List<Deposit> deposits)
+        {
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            using (XmlWriter writer = XmlWriter.Create("deposits.xml", settings))
+            {
+                writer.WriteStartElement("deposits");
+                foreach (Deposit deposit in deposits)
+                {
+                    writer.WriteStartElement("deposit");
+                    writer.WriteElementString("code", deposit.code.ToString());
+                    writer.WriteElementString("depositCode", deposit.client_code.ToString());
+                    writer.WriteElementString("depositBankAccount", deposit.bank_account.ToString());
+                    writer.WriteElementString("depositCurrency", deposit.currency.ToString());
+                    writer.WriteElementString("depositSum", deposit.sum.ToString());
+                    writer.WriteElementString("depositPercent", deposit.percent.ToString());
+                    writer.WriteElementString("depositStart", deposit.start.ToString());
+                    writer.WriteElementString("depositEnd", deposit.end.ToString());
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Work with XML \n");
+
+            XDocument clientsXML = CreateClientsXML(clients);
+
+            createCreditsXML(credits);
+            XmlDocument creditsXML = new XmlDocument();
+            creditsXML.Load("credits.xml");
+
+            createDepositsXML(deposits);
+            XmlDocument depositsXML = new XmlDocument();
+            depositsXML.Load("deposits.xml");
+
+
+
         }
     }
 }
