@@ -43,7 +43,7 @@ namespace MyApp
         static XDocument CreateClientsXML(List<Client> clients)
         {
             XDocument xdoc = new XDocument();
-            XElement people = new XElement("people");
+            XElement people = new XElement("clients");
 
             foreach (Client client in clients)
             {
@@ -76,8 +76,8 @@ namespace MyApp
                 foreach (Credit credit in credits)
                 {
                     writer.WriteStartElement("credit");
-                    writer.WriteElementString("code", credit.code.ToString());
-                    writer.WriteElementString("creditCode", credit.client_code.ToString());
+                    writer.WriteElementString("creditCode", credit.code.ToString());
+                    writer.WriteElementString("clientCode", credit.client_code.ToString());
                     writer.WriteElementString("creditBankAccount", credit.bank_account.ToString());
                     writer.WriteElementString("creditCurrency", credit.currency.ToString());
                     writer.WriteElementString("creditSum", credit.sum.ToString());
@@ -101,8 +101,8 @@ namespace MyApp
                 foreach (Deposit deposit in deposits)
                 {
                     writer.WriteStartElement("deposit");
-                    writer.WriteElementString("code", deposit.code.ToString());
-                    writer.WriteElementString("depositCode", deposit.client_code.ToString());
+                    writer.WriteElementString("depositCode", deposit.code.ToString());
+                    writer.WriteElementString("clientCode", deposit.client_code.ToString());
                     writer.WriteElementString("depositBankAccount", deposit.bank_account.ToString());
                     writer.WriteElementString("depositCurrency", deposit.currency.ToString());
                     writer.WriteElementString("depositSum", deposit.sum.ToString());
@@ -121,15 +121,256 @@ namespace MyApp
             Console.WriteLine("Work with XML \n");
 
             XDocument clientsXML = CreateClientsXML(clients);
+            clientsXML.Save("clients.xml");
 
             createCreditsXML(credits);
-            XmlDocument creditsXML = new XmlDocument();
-            creditsXML.Load("credits.xml");
+            XDocument creditsXML = XDocument.Load("credits.xml");
 
             createDepositsXML(deposits);
-            XmlDocument depositsXML = new XmlDocument();
-            depositsXML.Load("deposits.xml");
+            XDocument depositsXML = XDocument.Load("deposits.xml");
 
+            
+            var q1 = clientsXML.Element("clients")?
+                .Elements("client")
+                .Select(p => new
+                {
+                    name = p.Attribute("name")?.Value,
+                    code = p.Element("code")?.Value,
+                    email = p.Element("email")?.Value
+                });
+
+            foreach (var client in q1)
+                Console.WriteLine(client);
+
+
+            var q2 = creditsXML.Element("credits")?
+                .Elements("credit")
+                .Select(p => new
+                {
+                    code = p.Attribute("creditCode")?.Value,
+                    clientCode = p.Element("clientCode")?.Value,
+                    bankAccount = p.Element("creditBankAccount")?.Value,
+                    sum = p.Element("creditSum")?.Value,
+                    percent = p.Element("creditPercent")?.Value,
+                    start = p.Element("creditStart")?.Value,
+                    end = p.Element("creditEnd")?.Value,
+                    currency = p.Element("creditCurrency")?.Value
+                });
+
+            Console.WriteLine();
+            foreach (var credit in q2)
+                Console.WriteLine(credit);
+
+
+            var q3 = depositsXML.Element("deposits")?
+                .Elements("deposit");
+
+            Console.WriteLine();
+            foreach (var deposit in q3)
+                Console.WriteLine(deposit);
+
+
+            var q4 = clientsXML.Element("clients")?   
+                        .Elements("client")             
+                        .FirstOrDefault(p => p.Attribute("name")?.Value == "Homer Winfield");
+
+            Console.WriteLine();
+            Console.WriteLine(q4);
+
+
+            var q5 = from credit in creditsXML.Element("credits").Elements("credit")
+                     where credit.Element("creditCurrency").Value is "UAH"
+                     orderby credit.Element("creditSum").Value
+                     select credit.Element("creditSum").Value;
+
+            Console.WriteLine();
+            foreach (var sum in q5)
+                Console.WriteLine(sum);
+
+            var q6 = depositsXML.Element("deposits")
+                .Elements("deposit")? 
+                .Where((deposit) =>
+                {
+                    return Convert.ToInt32(deposit.Element("depositSum").Value) > 200; 
+                }).OrderByDescending(deposit => deposit.Element("depositCurrency").Value)
+                  .ThenByDescending(deposit => Convert.ToInt32(deposit.Element("depositSum").Value));
+
+            Console.WriteLine();
+            foreach (var deposit in q6) Console.WriteLine($"Currency: {deposit.Element("depositCurrency").Value}  Value: {deposit.Element("depositSum").Value}");
+
+            var q7 = depositsXML.Element("deposits")
+                .Elements("deposit")?
+                .SkipWhile(deposit => Convert.ToInt32(deposit.Element("depositSum").Value) < 2000)
+                .TakeWhile(deposit => Convert.ToInt32(deposit.Element("depositSum").Value) <= 40000);
+
+            Console.WriteLine();
+            foreach (var deposit in q7)
+                Console.WriteLine(deposit.Element("depositSum").Value);
+
+            var q8 = from client in clientsXML
+                            .Element("clients")
+                            .Elements("client") 
+                     join deposit in depositsXML
+                            .Element("deposits")
+                            .Elements("deposit") 
+                     on client.Element("code").Value equals deposit.Element("clientCode").Value
+                     select new 
+                     { 
+                         name = client.Attribute("name").Value,
+                         sum = deposit.Element("depositSum").Value 
+                     };
+            Console.WriteLine();
+            foreach (var x in q8)
+                Console.WriteLine(x.name + " deposit sum: " + x.sum);
+
+            var q9 = depositsXML.Element("deposits")?
+                        .Elements("deposit")
+                        .Sum(n =>
+                        {
+                            if (n.Element("clientCode").Value == "7234" && 
+                                n.Element("depositCurrency").Value == "UAH")
+                            {
+                                return int.Parse(n.Element("depositSum").Value);
+                            } else
+                            {
+                                return 0;
+                            }
+                        });
+
+
+            Console.WriteLine();
+            Console.WriteLine($" Clients with code 7234 deposits in UAH sum {q9} ");
+                
+            
+
+
+            /*  Console.WriteLine("Clients:");
+              var q1 = from client in clients
+                       select client.name;
+              foreach (var client in q1)
+                  Console.WriteLine(client);
+
+              Console.WriteLine("\nNew in LINQ:");
+              var q2 = from client in clients
+                       select new { name = "Mark", age = 18 };
+              foreach (var client in q2)
+              {
+                  Console.WriteLine(client);
+                  break;
+              }
+
+              Console.WriteLine("\nClients with code > 5000:");
+              var q3 = from client in clients
+                       where client.code > 5000
+                       select client.name;
+              foreach (var client in q3)
+                  Console.WriteLine(client);
+
+              Console.WriteLine("\nSorting:");
+              var q4 = from client in clients
+                       where client.code > 1000
+                       orderby client.code
+                       select client.code;
+              foreach (var code in q4)
+                  Console.WriteLine(code);
+
+              Console.WriteLine("\nCredits sum of credits in UAH:");
+              var q5 = from credit in credits
+                       where credit.currency is Currency.UAH
+                       orderby credit.sum
+                       select credit.sum;
+              foreach (var sum in q5)
+                  Console.WriteLine(sum);
+
+              Console.WriteLine("\nSorting with expanding methods:");
+              var q6 = deposits.Where((deposit) =>
+              {
+                  return deposit.sum > 200 && deposit.currency == Currency.USD;
+              }).OrderByDescending(deposit => deposit.sum).ThenByDescending(deposit => deposit.client_code);
+              foreach (var deposit in q6) Console.WriteLine(deposit.sum);
+
+              Console.WriteLine("\nSkipWhile and TakeWhile");
+              int[] intArray = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+              var q7 = intArray.SkipWhile(x => (x < 3)).TakeWhile(x => x <= 5);
+              foreach (var x in q7)
+                  Console.WriteLine(x);
+
+              Console.WriteLine("\nINNER JOIN");
+              var q8 = from client in clients
+                       join deposit in deposits on client.code equals deposit.client_code
+                       select new { name = client.name, sum = deposit.sum };
+              foreach (var x in q8)
+                  Console.WriteLine(x.name + " deposit sum: " + x.sum);
+
+              Console.WriteLine("\nJOIN with WHERE");
+              var q9 = from client in clients
+                       from deposit in deposits
+                       where client.code == deposit.client_code
+                       select new { name = client.name, sum = deposit.sum };
+              foreach (var x in q9)
+                  Console.WriteLine(x.name + " deposit sum: " + x.sum);
+
+              Console.WriteLine("\nGroup Join");
+              var q10 = from client in clients
+                        join deposit in deposits on client.code equals deposit.client_code into temp
+                        select new { name = client.name, depositGroup = temp };
+              foreach (var client in q10)
+              {
+                  Console.WriteLine(client.name);
+                  foreach (var deposit in client.depositGroup)
+                      Console.WriteLine("   " + deposit.sum);
+              }
+
+              Console.WriteLine("\nCross Join and Group Join");
+              var q11 = from client in clients
+                        join deposit in deposits on client.code equals deposit.client_code into temp
+                        from t in temp
+                        select new { name = client.name, sum = t.sum, cnt = temp.Count() };
+              foreach (var x in q11)
+                  Console.WriteLine(x);
+
+              Console.WriteLine("\nOuter Join");
+              var q12 = from client in clients
+                        join deposit in deposits on client.code equals deposit.client_code into temp
+                        from t in temp.DefaultIfEmpty()
+                        select new { name = client.name, sum = ((t == null) ? 0 : t.sum) };
+              foreach (var x in q12)
+                  Console.WriteLine(x);
+
+              Console.WriteLine("\nGrouping by currency");
+              var q13 = from credit in credits
+                        group credit by credit.currency into g
+                        select new { Key = g.Key, Values = g };
+              foreach (var credit in q13)
+              {
+                  Console.WriteLine(credit.Key);
+                  foreach (var s in credit.Values)
+                      Console.WriteLine(" " + s.sum);
+              }
+
+              Console.WriteLine("\nGrouping with aggregation functions ");
+              var q14 = from credit in credits
+                        group credit by credit.client_code into g
+                        select new { Key = g.Key, Values = g, cnt = g.Count(), cnt1 = g.Count(credit => credit.sum > 500), sum = g.Sum(credit => credit.sum), min = g.Min(credit => credit.sum) };
+              foreach (var credit in q14)
+              {
+                  Console.WriteLine("Client code: " + credit.Key + " Number: " + credit.cnt + " Sum: " + credit.sum + " Min: " + credit.min);
+                  foreach (var y in credit.Values)
+                      Console.WriteLine(" " + y.sum);
+              }
+
+              Console.WriteLine("\nCredit sums of clients whose name starts with 'M' showed by their e-mails");
+              var q15 = from client in clients
+                        join credit in credits on client.code equals credit.client_code into temp
+                        where client.name.StartsWith("M")
+                        select new { name = client.name, email = client.email, Values = temp };
+              foreach (var client in q15)
+              {
+                  Console.WriteLine("email: " + client.email);
+                  foreach (var y in client.Values)
+                      Console.WriteLine("Sum: " + y.sum + " Currency type: " + y.currency);
+
+              }*/
 
 
         }
