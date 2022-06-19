@@ -187,33 +187,33 @@ namespace MyApp
             foreach (var sum in q5)
                 Console.WriteLine(sum);
 
-            var q6 = depositsXML.Element("deposits")
+            var q6 = depositsXML.Element("deposits")?
                 .Elements("deposit")? 
                 .Where((deposit) =>
                 {
-                    return Convert.ToInt32(deposit.Element("depositSum").Value) > 200; 
-                }).OrderByDescending(deposit => deposit.Element("depositCurrency").Value)
-                  .ThenByDescending(deposit => Convert.ToInt32(deposit.Element("depositSum").Value));
+                    return Convert.ToInt32(deposit.Element("depositSum")?.Value) > 200; 
+                }).OrderByDescending(deposit => deposit.Element("depositCurrency")?.Value)
+                  .ThenByDescending(deposit => Convert.ToInt32(deposit.Element("depositSum")?.Value));
 
             Console.WriteLine();
-            foreach (var deposit in q6) Console.WriteLine($"Currency: {deposit.Element("depositCurrency").Value}  Value: {deposit.Element("depositSum").Value}");
+            foreach (var deposit in q6) Console.WriteLine($"Currency: {deposit.Element("depositCurrency")?.Value}  Value: {deposit.Element("depositSum").Value}");
 
             var q7 = depositsXML.Element("deposits")
                 .Elements("deposit")?
-                .SkipWhile(deposit => Convert.ToInt32(deposit.Element("depositSum").Value) < 2000)
-                .TakeWhile(deposit => Convert.ToInt32(deposit.Element("depositSum").Value) <= 40000);
+                .SkipWhile(deposit => Convert.ToInt32(deposit.Element("depositSum")?.Value) < 2000)
+                .TakeWhile(deposit => Convert.ToInt32(deposit.Element("depositSum")?.Value) <= 40000);
 
             Console.WriteLine();
             foreach (var deposit in q7)
-                Console.WriteLine(deposit.Element("depositSum").Value);
+                Console.WriteLine(deposit.Element("depositSum")?.Value);
 
             var q8 = from client in clientsXML
-                            .Element("clients")
-                            .Elements("client") 
+                            .Element("clients")?
+                            .Elements("client")
                      join deposit in depositsXML
                             .Element("deposits")
                             .Elements("deposit") 
-                     on client.Element("code").Value equals deposit.Element("clientCode").Value
+                     on client.Element("code")?.Value equals deposit.Element("clientCode")?.Value
                      select new 
                      { 
                          name = client.Attribute("name").Value,
