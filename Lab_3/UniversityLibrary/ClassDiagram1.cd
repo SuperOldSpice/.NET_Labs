@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UniversityLibrary.Student">
+    <Position X="16.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAIAAAAAAIAAAAQAIAAEAAAAAAAAAAAECAAgAAFBE=</HashCode>
+      <FileName>Student.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_degree" />
+      <Field Name="_form" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniversityLibrary.EducationForm" Collapsed="true">
+    <Position X="10.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAIAAAAAAACAAAAAACAAAAAQAA=</HashCode>
+      <FileName>EducationForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.Degree" Collapsed="true">
+    <Position X="11.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAIAAAAACAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Degree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.BachelorsDegree" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BachelorsDegree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.MastersDegree" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MastersDegree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.PhDDegree" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PhDDegree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.BudgetForm" Collapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>BudgetForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniversityLibrary.ContractForm" Collapsed="true">
+    <Position X="11.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ContractForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
