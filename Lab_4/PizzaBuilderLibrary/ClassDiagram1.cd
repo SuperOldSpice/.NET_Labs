@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PizzaBuilderLibrary.ClosedPizzaBuilder" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="4.25" Width="2.25" />
+    <AssociationLine Name="_product" Type="PizzaBuilderLibrary.Pizza" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.625" Y="7.276" />
+        <Point X="2.625" Y="7.433" />
+        <Point X="2.625" Y="7.433" />
+        <Point X="2.625" Y="7.594" />
+        <Point X="3.25" Y="7.594" />
+        <Point X="3.25" Y="7.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.05" Y="0.214" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAoABAAAAAAACAAAABgCAAAAAIAACACAAAA=</HashCode>
+      <FileName>ClosedPizzaBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_product" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PizzaBuilderLibrary.Director">
+    <Position X="7" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQABAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Director.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_builder" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PizzaBuilderLibrary.OpenPizzaBuilder" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="4.25" Width="2.25" />
+    <AssociationLine Name="_product" Type="PizzaBuilderLibrary.Pizza" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.281" Y="7.276" />
+        <Point X="5.281" Y="7.583" />
+        <Point X="4.312" Y="7.583" />
+        <Point X="4.312" Y="7.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.69" Y="0.173" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAoABAAAAAAACAAAABgCAAAAAIAACACAAAA=</HashCode>
+      <FileName>OpenPizzaBuilder.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_product" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PizzaBuilderLibrary.Pizza">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAAAAAAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pizza.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="PizzaBuilderLibrary.IBuilder">
+    <Position X="3.25" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAoAAAAAAAAACAAAABgCAAAAAAAAAACAAAA=</HashCode>
+      <FileName>IBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

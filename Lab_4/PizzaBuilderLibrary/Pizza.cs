@@ -38,7 +38,7 @@ namespace PizzaBuilderLibrary
 
             str = str.Remove(str.Length - 2); 
 
-            return "Price: " + _price + " Pizza consists of: " + str + "\n";
+            return "Price: " + _price.ToString("C") + " Pizza consists of: " + str + "\n";
         }
     }
 }
